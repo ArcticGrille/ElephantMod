@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
@@ -28,7 +29,10 @@ public class ElephantMod implements ModInitializer {
     public void onInitialize() {
         log(Level.INFO, "Initializing...");
     
-        FabricDefaultAttributeRegistry.register(ELEPHANT_ENTITY, ElephantEntity.createMobAttributes());
+        FabricDefaultAttributeRegistry.register(ELEPHANT_ENTITY, ElephantEntity.createMobAttributes()
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224d) // This is a cow's speed lol -Jolkert 2020-07-16
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 7.0d)
+        );
     }
 
     public static void log(Level level, String message)
