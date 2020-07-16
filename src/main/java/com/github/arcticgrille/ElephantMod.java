@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ElephantMod implements ModInitializer {
 
+    //gaming
     public static Logger LOGGER = LogManager.getLogger();
 
     public static final String MOD_ID = "elephantmod";
