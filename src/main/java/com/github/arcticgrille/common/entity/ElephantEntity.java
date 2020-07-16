@@ -28,7 +28,6 @@ public class ElephantEntity extends AnimalEntity
 	 * -Jolkert 2020-07-15
 	 */
 
-	//haha funny test
 	@Override
 	protected void initGoals()
 	{
