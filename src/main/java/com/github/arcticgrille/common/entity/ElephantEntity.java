@@ -2,6 +2,7 @@ package com.github.arcticgrille.common.entity;
 
 import com.github.arcticgrille.ElephantMod;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.Durations;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.mob.Angerable;
@@ -13,6 +14,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.math.IntRange;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
 
@@ -37,18 +39,16 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		super(entityType, world);
 	}
 	
+	
 	/*
-	 * The body of initGoals() is mostly just copy-pasted from CowEntity so it might have to change later
-	 * Though it seems to be standard for all animals to have this
-	 * This might just be the permanent solution lol
-	 * -Jolkert 2020-07-15
+	 * initGoals() is kind of a Frankensteined method at the moment
+	 * I think it works tho
+	 * -Jolkert 2020-07-16
 	 */
-
 	@Override
 	protected void initGoals()
 	{
 		this.goalSelector.add(0, new SwimGoal(this));
-		this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0D));
 		this.goalSelector.add(2, new AnimalMateGoal(this, 1.0D));
 		this.goalSelector.add(3, new TemptGoal(this, 1.25D, BREEDING_INGREDIENT, false));
 		this.goalSelector.add(4, new FollowParentGoal(this, 1.25D));
@@ -56,8 +56,10 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
 		this.goalSelector.add(7, new LookAroundGoal(this));
 		
-		// FIXME: This doesn't work quite right? Not sure if this is even how this works or if I'm missing something
-		//this.targetSelector.add(8, new UniversalAngerGoal(this, true));
+		this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+		this.targetSelector.add(2, new MeleeAttackGoal(this, 3.0d, true)); // careful with that speed pardner -Jolkert 2020-07-16
+		this.targetSelector.add(3, new FollowTargetGoal(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
+		this.targetSelector.add(4, new UniversalAngerGoal(this, true));
 	}
 	
 	@Override
@@ -77,6 +79,7 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 	 * Overrides from Angerable
 	 * Literally copied almost exactly from PolarBearEntity
 	 * Hopefully this works correctly??
+	 * UPDATE: It totally does
 	 * -Jolkert 2020-07-16
 	 */
 	@Override
@@ -105,5 +108,17 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 	public void chooseRandomAngerTime()
 	{
 		this.setAngerTime(ANGER_TIME_RANGE.choose(this.random));
+	}
+	
+	// ?????? -Jolkert 2020-07-16
+	/*
+	 * Actually tho I cannot understand for the life of me why tf I need to do this
+	 * It literally just casts obj as a LivingEntity and calls the super method
+	 * This makes no damn sense but we need it
+	 * -Jolkert 2020-07-16
+	 */
+	public boolean shouldAngerAt(Object obj)
+	{
+		return Angerable.super.shouldAngerAt((LivingEntity)obj);
 	}
 }
