@@ -8,7 +8,9 @@
     "Jolkert"
   ],
   "contributors": [],
-  "contact": {},
+  "contact": {
+    "sources": "https://github.com/ArcticGrille/ElephantMod"
+  },
   "license": "unlicense",
   "icon": "assets/elephantmod/icon.png",
   "environment": "*",
@@ -16,7 +18,9 @@
     "main": [
       "com.github.arcticgrille.ElephantMod"
     ],
-    "client": [],
+    "client": [
+      "com.github.arcticgrille.client.ElephantModClient"
+    ],
     "server": []
   },
   "mixins": [
