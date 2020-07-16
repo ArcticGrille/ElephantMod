@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "elephantmod",
+  "version": "${version}",
+  "name": "Elephant Mod",
+  "description": "Adds elephants to Minecraft.",
+  "authors": [
+    "Jolkert"
+  ],
+  "contributors": [],
+  "contact": {},
+  "license": "unlicense",
+  "icon": "assets/elephantmod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.arcticgrille.ElephantMod"
+    ],
+    "client": [],
+    "server": []
+  },
+  "mixins": [
+    "elephantmod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.9.0",
+    "fabric": "*"
+  }
+}
