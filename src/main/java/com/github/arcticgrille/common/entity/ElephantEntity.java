@@ -56,6 +56,7 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
 		this.goalSelector.add(7, new LookAroundGoal(this));
 		
+		// IntelliJ please shut up I will not give in to your demands
 		this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
 		this.targetSelector.add(2, new MeleeAttackGoal(this, 3.0d, true)); // careful with that speed pardner -Jolkert 2020-07-16
 		this.targetSelector.add(3, new FollowTargetGoal(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));

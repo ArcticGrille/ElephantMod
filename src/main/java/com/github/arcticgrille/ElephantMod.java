@@ -33,6 +33,7 @@ public class ElephantMod implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ELEPHANT_ENTITY, ElephantEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224d) // This is a cow's speed lol -Jolkert 2020-07-16
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 7.0d)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0d) // We gonna make this higher later -Jolkert 2020-07-16
         );
     }
 
