@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 
 
 // IF YOU HAVE COMMENTS COLLAPSED PLEASE READ THIS ONE THX
-/**
+/*
  * Literally none of this is permanent. This is just a placeholder so that we can have literally anything to test with
  * Whenever we have an actual elephant model it will replace this one and the texture will replace the current one
  * GO TO: resources/assets/elephantmod/textures/entity/elephant/elephant.ong to replace it

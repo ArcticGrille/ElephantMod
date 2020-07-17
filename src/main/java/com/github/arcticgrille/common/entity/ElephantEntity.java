@@ -54,12 +54,7 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		this.targetSelector.add(4, new UniversalAngerGoal(this, true));
 	}
 	
-	/**
-	 * Overrides for breeding
-	 * There's really not much to talk about but it's pretty important I guess
-	 * Thanks for attending my TEDTalk
-	 * -Jolkert 2020-07-17
-	 */
+	// Overrides for breeding
 	@Override
 	public boolean isBreedingItem(ItemStack stack)
 	{
@@ -73,13 +68,7 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 	}
 	
 	
-	/**
-	 * Overrides from Angerable
-	 * Literally copied almost exactly from PolarBearEntity
-	 * Hopefully this works correctly??
-	 * UPDATE: It totally does
-	 * -Jolkert 2020-07-16
-	 */
+	 // Overrides from Angerable
 	@Override
 	public int getAngerTime()
 	{
@@ -108,8 +97,8 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		this.setAngerTime(ANGER_TIME_RANGE.choose(this.random));
 	}
 	
-	/**
-	 * ??????
+	// ??????
+	/*
 	 * lambda machine broke
 	 * Actually tho I cannot understand for the life of me why tf I need to do this
 	 * It literally just casts obj as a LivingEntity and calls the super method

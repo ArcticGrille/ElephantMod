@@ -10,6 +10,6 @@ public class ElephantModClient implements ClientModInitializer
 	@Override
 	public void onInitializeClient()
 	{
-		EntityRendererRegistry.INSTANCE.register(ElephantMod.ELEPHANT_ENTITY, (dispatcher, context) -> {return new ElephantEntityRenderer(dispatcher);});
+		EntityRendererRegistry.INSTANCE.register(ElephantMod.ELEPHANT_ENTITY, (dispatcher, context) -> new ElephantEntityRenderer(dispatcher));
 	}
 }
