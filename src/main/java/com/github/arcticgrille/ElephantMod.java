@@ -16,8 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ElephantMod implements ModInitializer {
-
-    //gaming
+    
     public static Logger LOGGER = LogManager.getLogger();
 
     public static final String MOD_ID = "elephantmod";
@@ -27,7 +26,8 @@ public class ElephantMod implements ModInitializer {
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ElephantEntity::new).dimensions(EntityDimensions.fixed(.75f, .75f)).build());
     
     @Override
-    public void onInitialize() {
+    public void onInitialize()
+    {
         log(Level.INFO, "Initializing...");
     
         FabricDefaultAttributeRegistry.register(ELEPHANT_ENTITY, ElephantEntity.createMobAttributes()

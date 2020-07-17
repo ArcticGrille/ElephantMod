@@ -17,6 +17,7 @@ public class ElephantEntityRenderer extends MobEntityRenderer<ElephantEntity, El
 	@Override
 	public Identifier getTexture(ElephantEntity entity)
 	{
+		//FIXME: Get rid of the hardcoded path at some point? Probably a good idea
 		return new Identifier(ElephantMod.MOD_ID, "textures/entity/elephant/elephant.png");
 	}
 }

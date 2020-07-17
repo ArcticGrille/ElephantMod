@@ -18,11 +18,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
 
-/* Ok so I think I fixed it they seem to be moving at a much more reasonable rate
- * I just added attributes other than defaults onto them
- * Check out ElephantMod.java to see what I'm on about
- * -Jolkert 2020-07-16
- */
+
 // TODO: Make them carpetable!
 // fuck you intellij carpetable is not a typo
 // TODO: Also give them a chest inventory ??? maybe?
@@ -40,11 +36,6 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 	}
 	
 	
-	/*
-	 * initGoals() is kind of a Frankensteined method at the moment
-	 * I think it works tho
-	 * -Jolkert 2020-07-16
-	 */
 	@Override
 	protected void initGoals()
 	{
@@ -63,6 +54,12 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		this.targetSelector.add(4, new UniversalAngerGoal(this, true));
 	}
 	
+	/**
+	 * Overrides for breeding
+	 * There's really not much to talk about but it's pretty important I guess
+	 * Thanks for attending my TEDTalk
+	 * -Jolkert 2020-07-17
+	 */
 	@Override
 	public boolean isBreedingItem(ItemStack stack)
 	{
@@ -76,7 +73,7 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 	}
 	
 	
-	/*
+	/**
 	 * Overrides from Angerable
 	 * Literally copied almost exactly from PolarBearEntity
 	 * Hopefully this works correctly??
@@ -111,8 +108,9 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		this.setAngerTime(ANGER_TIME_RANGE.choose(this.random));
 	}
 	
-	// ?????? -Jolkert 2020-07-16
-	/*
+	/**
+	 * ??????
+	 * lambda machine broke
 	 * Actually tho I cannot understand for the life of me why tf I need to do this
 	 * It literally just casts obj as a LivingEntity and calls the super method
 	 * This makes no damn sense but we need it
