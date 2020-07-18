@@ -7,11 +7,15 @@ import net.minecraft.entity.ai.Durations;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.IntRange;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -22,15 +26,15 @@ import java.util.UUID;
 // TODO: Make them carpetable!
 // fuck you intellij carpetable is not a typo
 // TODO: Also give them a chest inventory ??? maybe?
-public class ElephantEntity extends AnimalEntity implements Angerable
+public class ElephantEntity extends HorseBaseEntity implements Angerable
 {
 	private static final Ingredient BREEDING_INGREDIENT = Ingredient.ofItems(Items.HAY_BLOCK); // This is not necessarily the permanent breeding ingredient -Jolkert 2020-07-15
-	private static final IntRange ANGER_TIME_RANGE = Durations.betweenSeconds(20, 39);
 	
+	private static final IntRange ANGER_TIME_RANGE = Durations.betweenSeconds(20, 39);
 	private int angerTime;
 	private UUID targetUuid;
 	
-	public ElephantEntity(EntityType<? extends AnimalEntity> entityType, World world)
+	public ElephantEntity(EntityType<? extends HorseBaseEntity> entityType, World world)
 	{
 		super(entityType, world);
 	}
@@ -40,6 +44,7 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 	protected void initGoals()
 	{
 		this.goalSelector.add(0, new SwimGoal(this));
+		this.goalSelector.add(1, new HorseBondWithPlayerGoal(this, 1.2D));
 		this.goalSelector.add(2, new AnimalMateGoal(this, 1.0D));
 		this.goalSelector.add(3, new TemptGoal(this, 1.25D, BREEDING_INGREDIENT, false));
 		this.goalSelector.add(4, new FollowParentGoal(this, 1.25D));
@@ -67,8 +72,55 @@ public class ElephantEntity extends AnimalEntity implements Angerable
 		return ElephantMod.ELEPHANT_ENTITY.create(this.world);
 	}
 	
+	// Overrides for horse-like behavior
+	@Override
+	public ActionResult interactMob(PlayerEntity player, Hand hand)
+	{
+		ItemStack itemStack = player.getStackInHand(hand);
+		if(!this.isBaby())
+		{
+			if(this.isTame() && player.shouldCancelInteraction())
+			{
+				this.openInventory(player);
+				return ActionResult.success(this.world.isClient);
+			}
+			
+			if(this.hasPassengers())
+				return super.interactMob(player, hand);
+		}
+		if(!itemStack.isEmpty())
+		{
+			if(this.isBreedingItem(itemStack))
+				return this.method_30009(player, itemStack); // Not entirely sure what method_30009 is. Pretty sure it's just a GP feed method? -Jolkert 2020-07-17
+			
+			ActionResult actionResult = itemStack.useOnEntity(player, this, hand);
+			if(actionResult.isAccepted())
+				return actionResult;
+			
+			if(!this.isTame())
+			{
+				this.playAngrySound();
+				return ActionResult.success(this.world.isClient);
+			}
+			
+			boolean bl = !this.isBaby() && !this.isSaddled() && itemStack.getItem() == Items.SADDLE;
+			if(this.canEquip(itemStack) || bl)
+			{
+				this.openInventory(player);
+				return ActionResult.success(this.world.isClient);
+			}
+		}
+		
+		if(this.isBaby())
+			return super.interactMob(player, hand);
+		else
+		{
+			this.putPlayerOnBack(player);
+			return ActionResult.success(this.world.isClient);
+		}
+	}
 	
-	 // Overrides from Angerable
+	// Overrides from Angerable
 	@Override
 	public int getAngerTime()
 	{
