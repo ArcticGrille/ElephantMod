@@ -80,7 +80,7 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 		if(!this.isBaby())
 		{
 			if(this.isTame() && player.shouldCancelInteraction())
-			{
+			{// If the elephant is tame, and the player is sneaking, open the inventory (is if statement actually really confusing, or am I just stupid at 4am? -Jolkert 2020-07-19)
 				this.openInventory(player);
 				return ActionResult.success(this.world.isClient);
 			}
@@ -103,8 +103,8 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 				return ActionResult.success(this.world.isClient);
 			}
 			
-			boolean bl = !this.isBaby() && !this.isSaddled() && itemStack.getItem() == Items.SADDLE;
-			if(this.canEquip(itemStack) || bl)
+			boolean shouldEquipSaddle = !this.isBaby() && !this.isSaddled() && itemStack.getItem() == Items.SADDLE;
+			if(this.canEquip(itemStack) || shouldEquipSaddle)
 			{
 				this.openInventory(player);
 				return ActionResult.success(this.world.isClient);
