@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
+import java.util.function.Predicate;
 
 
 // TODO: Make them carpetable!
@@ -33,6 +34,7 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 	private static final IntRange ANGER_TIME_RANGE = Durations.betweenSeconds(20, 39);
 	private int angerTime;
 	private UUID targetUuid;
+	private RevengeGoal revengeGoal;
 	
 	public ElephantEntity(EntityType<? extends HorseBaseEntity> entityType, World world)
 	{
@@ -53,7 +55,8 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 		this.goalSelector.add(7, new LookAroundGoal(this));
 		
 		// IntelliJ please shut up I will not give in to your demands
-		this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+		this.revengeGoal = new RevengeGoal(this, new Class[0]).setGroupRevenge();
+		this.targetSelector.add(1, this.revengeGoal);
 		this.targetSelector.add(2, new MeleeAttackGoal(this, 3.0d, true)); // careful with that speed pardner -Jolkert 2020-07-16
 		this.targetSelector.add(3, new FollowTargetGoal(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
 		this.targetSelector.add(4, new UniversalAngerGoal(this, true));
@@ -115,9 +118,25 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 			return super.interactMob(player, hand);
 		else
 		{
-			this.putPlayerOnBack(player);
-			return ActionResult.success(this.world.isClient);
+			if(this.getTarget() == null)
+			{
+				this.putPlayerOnBack(player);
+				return ActionResult.success(this.world.isClient);
+			}
+			else
+				return super.interactMob(player, hand);
 		}
+	}
+	
+	@Override
+	public void setTame(boolean tame)
+	{
+		super.setTame(tame);
+		
+		if(tame)
+			this.targetSelector.remove(revengeGoal);
+		else
+			this.targetSelector.add(1, revengeGoal);
 	}
 	
 	// Overrides from Angerable
@@ -133,6 +152,12 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 	}
 	
 	@Override
+	protected void onGrowUp()
+	{
+		super.onGrowUp();
+	}
+	
+	@Override
 	public UUID getAngryAt()
 	{
 		return this.targetUuid;
@@ -140,7 +165,7 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 	@Override
 	public void setAngryAt(UUID uuid)
 	{
-		this.targetUuid = uuid;
+		this.targetUuid = this.isTame() ? null : uuid;
 	}
 	
 	@Override
