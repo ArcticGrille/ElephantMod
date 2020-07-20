@@ -6,9 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.Durations;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,10 +16,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.IntRange;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
-import java.util.function.Predicate;
 
 
 // TODO: Make them carpetable!
@@ -165,7 +161,7 @@ public class ElephantEntity extends HorseBaseEntity implements Angerable
 	@Override
 	public void setAngryAt(UUID uuid)
 	{
-		this.targetUuid = this.isTame() ? null : uuid;
+		this.targetUuid = uuid;
 	}
 	
 	@Override
